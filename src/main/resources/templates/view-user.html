@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/basic}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add New User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css">
+
+
+</head>
+<body>
+<div layout:fragment="content">
+    <h1 class="text-center mb-4">Register User List</h1>
+
+    <th:block th:include="fragment/success-message.html"></th:block>
+
+
+    <a th:href="@{/create-user/sign-up}" class="btn btn-outline-success mb-3" sec:authorize="hasAnyAuthority('ADMIN')">
+        <i class="fas fa-fw fa-user-plus"></i> Create New Users
+    </a>
+    <div class="table-responsive">
+        <table id="example" class="table table-sm table-striped">
+            <thead>
+            <tr class="text-center">
+                <th>User Name</th>
+                <th>User Email</th>
+                <th>User Phone</th>
+                <th>User Role</th>
+                <th>Created at</th>
+                <th>Update at</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(responseDTOS)}">
+                <td class="text-center fw-bold" colspan="10">No records found</td>
+            </tr>
+            <tr class="text-center" th:each="responeDto: ${responseDTOS}">
+                <td th:text="${responeDto.username}">User Name</td>
+                <td th:text="${responeDto.email}">User Email</td>
+                <td th:text="${responeDto.phoneNumber}">User Phone</td>
+                <!--<td th:text="${responeDto.roles}">User Role</td>-->
+                <td th:each="object: ${responeDto.roles}"><span th:text="${object.name}" /></td>
+                <td th:text="${#temporals.format(responeDto.createdAt, 'dd/MM/yyyy HH:mm:ss')}">CreatedAt</td>
+                <td th:text="${#temporals.format(responeDto.updatedAt, 'dd/MM/yyyy HH:mm:ss')}">UpdateAt</td>
+                <td>
+                    <div class="btn-group">
+                        <div sec:authorize="hasAnyAuthority('ADMIN')">
+                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                <a th:href="@{/create-user/{id}(id=${responeDto.id})}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-fw fa-pencil-alt"></i>
+                                </a>
+                            </button>
+                        </div>
+
+                        <div sec:authorize="hasAnyAuthority('ADMIN')">
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteConfirmModal">
+                            <a th:href="@{/create-user/delete/{id}(id=${responeDto.id})}"
+                               class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-fw fa-trash-alt"></i>
+                            </a>
+                        </button></div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            //Only needed for the filename of export files.
+            //Normally set in the title tag of your page.
+            document.title = "User";
+            // Create search inputs in footer
+            $("#example tfoot th").each(function () {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            });
+            // DataTable initialisation
+            var table = $("#example").DataTable({
+                dom: '<"dt-buttons"Bf><"clear">lirtp',
+                paging: true,
+                autoWidth: true,
+                buttons: [
+                    {
+                        text: 'Print <i class="fa fa-lg fa-print"></i>',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        },
+                        className: 'table-btns print-btn'
+                    },
+                    {
+                        text: 'Export to Excel <i class="fa fa-lg fa-file-excel-o"></i>',
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        },
+                        className: 'table-btns excel-btn'
+                    },
+                    {
+                        text: 'Refresh <i class="fa fa-lg fa-repeat"></i>',
+                        action: function () {
+                            window.location.reload();
+                        },
+                        className: 'table-btns refresh-btn'
+                    }],
+                initComplete: function (settings, json) {
+                    var footer = $("#example tfoot tr");
+                    $("#example thead").append(footer);
+                }
+            });
+            $("#example_wrapper").find($(".dt-buttons")).css("float","right");
+
+            // Apply the search
+            $("#example thead").on("keyup", "input", function () {
+                table.column($(this).parent().index())
+                    .search(this.value)
+                    .draw();
+            });
+        });
+
+    </script>
+</th:block>
+
+</body>
+</html>

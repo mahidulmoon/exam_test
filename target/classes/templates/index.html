@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml" layout:decorate="~{/layout/basic}">
+<body>
+<div layout:fragment="content">
+    <div class="p-5 mb-4 bg-light rounded-3 dropdown">
+        <div class="container-fluid py-3 dropdown-toggle" id="dropdownMenuButton"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <samp class="fw-normal text-center">User Access Module List</samp>
+
+        </div>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="padding: 50px">
+
+            <div class="row align-items-md-stretch">
+                <div class="container-fluid py-3">
+                    <div class="row align-items-md-stretch">
+                        <div class="col-md-4">
+                            <div class="h-10 p-5 rounded-3" style="box-shadow: 5px 10px #888888; background-color: #C2A49D" sec:authorize="hasAnyAuthority('ADMIN','EDITOR','VIEW')">
+                                <a th:href="@{/personal-info}" class="nav-link text-dark  text-center">
+                                    <i class="fa fa-sitemap d-block fa-lg mx-auto mb-2" aria-hidden="true"></i>
+                                    Create Personal Information
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="h-10 p-5 rounded-3" style="box-shadow: 5px 10px #888888; background-color: #9DC2C0" sec:authorize="hasAnyAuthority('ADMIN')">
+                                <a th:href="@{/role}" class="nav-link text-dark  text-center">
+                                    <i class="fa fa-bullhorn d-block fa-lg mx-auto mb-2" aria-hidden="true"></i>
+                                    Role Create
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="h-10 p-5 rounded-3" style="box-shadow: 5px 10px #888888; background-color: #A6B6E3" sec:authorize="hasAnyAuthority('ADMIN','EDITOR','VIEW')">
+                                <a th:href="@{/create-user}" class="nav-link text-dark  text-center">
+                                    <i class="fa fa-plus-circle d-block fa-lg mx-auto mb-2" aria-hidden="true"></i>
+                                    User Create
+                                </a>
+                            </div>
+                        </div>
+
+                        <!--  <div class="col-md-4">
+                              <div class="h-10 p-5 bg-light rounded-3" sec:authorize="hasAnyAuthority('ADMIN')">
+                                  <a th:href="@{/organization}" class="nav-link text-dark  text-center">
+                                      <i class="fa fa-sitemap d-block fa-lg mx-auto mb-2" aria-hidden="true"></i>
+                                      Organization View
+                                  </a>
+                              </div>
+                          </div>-->
+                        <!--       <div class="col-md-4">
+                                   <div class="h-10 p-5 bg-light rounded-3" sec:authorize="hasAnyAuthority('ADMIN')">
+                                       <a th:href="@{/emergency-contract}" class="nav-link text-dark  text-center">
+                                           <i class="fa fa-bullhorn d-block fa-lg mx-auto mb-2" aria-hidden="true"></i>
+                                           Emergency Contact
+                                       </a>
+                                   </div>
+                               </div>-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+        <div class="container-fluid py-3">
+            <div class="row align-items-md-stretch">
+
+            </div>
+        </div>
+    </div>
+
+    <h2 class="pt-3 mt-4 border-top"></h2>
+</div>
+</body>
+</html>

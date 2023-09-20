@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{/layout/basic}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css">
+    <link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="text-center">
+        <samp class="text-center m-lg-2">Edit Contract</samp>
+    </div>
+
+    <div class="container mt-3">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" th:action="@{/contract/{id}(id=${responseDTO.id})}" class="mx-auto w-50" th:object="${responseDTO}">
+                    <th:block th:include="fragment/error-message.html"></th:block>
+                    <fieldset>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Organization:</label>
+                                <select class="form-control" th:field="*{organization}"
+                                        th:classappend="${#fields.hasErrors('organization')}? 'is-invalid'">
+                                    <option value="default">Select Organozation Type..</option>
+                                    <option th:each="operator : ${orgRequestDTOList}" th:value="${operator.id}" th:text="${operator.orgName}"></option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label>Intercom (Office):</label>
+                                <input type="text" class="form-control" placeholder="Enter the Intercom Office..." th:field="*{intercomOffice}" th:classappend="${#fields.hasErrors('intercomOffice')}? 'is-invalid'">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Govt.Id:</label>
+                                <input type="text" class="form-control" placeholder="Enter the Organization..." th:field="*{govId}" th:classappend="${#fields.hasErrors('govId')}? 'is-invalid'">
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label>Intercom (Residence):</label>
+                                <input type="text" class="form-control" placeholder="Enter the Intercom Office..." th:field="*{intercomResidence}" th:classappend="${#fields.hasErrors('intercomResidence')}? 'is-invalid'">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Name(Eng):</label>
+                                <input type="text" class="form-control" placeholder="Enter the Organization..." th:field="*{name}" th:classappend="${#fields.hasErrors('name')}? 'is-invalid'">
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label>Phone (Office):</label>
+                                <input type="text" class="form-control" placeholder="Enter the Intercom Office..." th:field="*{mobileNumber}" th:classappend="${#fields.hasErrors('mobileNumber')}? 'is-invalid'">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Designation(Eng):</label>
+                                <select class="form-control" th:field="*{designation}"
+                                        th:classappend="${#fields.hasErrors('designation')}? 'is-invalid'">
+                                    <option value="default">Select Organozation Type..</option>
+                                    <option value="AUDITOR">AUDITOR</option>
+                                    <option value="ASSISTANTREGISTRAR">ASSISTANT REGISTRAR</option>
+                                    <option value="ASSISTANTCHIEFENGINEER">ASSISTANT CHIEF ENGINEER</option>
+                                    <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+                                    <option value="SECONDOFFICER">SECOND OFFICER</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label>Phone (Residence):</label>
+                                <input type="text" class="form-control" placeholder="Enter the Intercom Office..." th:field="*{mobileNumberResidence}" th:classappend="${#fields.hasErrors('mobileNumberResidence')}? 'is-invalid'">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Email:</label>
+                                <input type="text" class="form-control" placeholder="Enter the Organization..." th:field="*{email}" th:classappend="${#fields.hasErrors('email')}? 'is-invalid'">
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label>Order Sl:</label>
+                                <input type="text" class="form-control" placeholder="Enter the Intercom Office..." th:field="*{orderSl}" th:classappend="${#fields.hasErrors('orderSl')}? 'is-invalid'">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!--          <div class="col-sm-6 mb-3">
+                                          <label>Is Active:</label>
+                                          <input type="checkbox" class="form-control" placeholder="Enter the Organization..." th:field="*{isActive}" th:classappend="${#fields.hasErrors('isActive')}? 'is-invalid'">
+                                      </div>-->
+
+                        </div>
+
+                    </fieldset>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a th:href="@{/contract}" class="btn btn-outline-secondary w-100">
+                                Back
+                            </a>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="submit" class="btn btn-outline-success w-100">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+    &lt;!&ndash;<script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>&ndash;&gt;
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+
+    <script src="https://harvesthq.github.io/chosen/docsupport/jquery-3.2.1.min.js"></script>
+    <script src="https://harvesthq.github.io/chosen/chosen.jquery.js"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('select').chosen();
+        });
+    </script>
+</th:block>
+</body>
+</html>
